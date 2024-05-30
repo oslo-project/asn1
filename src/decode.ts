@@ -234,10 +234,10 @@ function decodeASN1IntoKnownValues(
 			];
 		}
 		if (decoded.contents[0] === 0x40) {
-			return [new ASN1SpecialReal(SpecialReal.Infinity), size];
+			return [new ASN1SpecialReal(SpecialReal.PlusInfinity), size];
 		}
 		if (decoded.contents[0] === 0x41) {
-			return [new ASN1SpecialReal(SpecialReal.NegativeInfinity), size];
+			return [new ASN1SpecialReal(SpecialReal.MinusInfinity), size];
 		}
 		// unreachable
 		throw new ASN1InvalidError();
@@ -420,7 +420,7 @@ function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
 		// indefinite form
 		throw new ASN1InvalidError();
 	}
-	
+
 	let contentLength = 0;
 	if (data[offset] >> 7 === 0) {
 		contentLength = data[offset] & 0x7f;

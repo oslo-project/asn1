@@ -214,17 +214,17 @@ export class ASN1SpecialReal implements ASN1Value {
 
 	public encodeContents(): Uint8Array {
 		switch (this.value) {
-			case SpecialReal.Infinity:
+			case SpecialReal.PlusInfinity:
 				return new Uint8Array([0x40]);
-			case SpecialReal.NegativeInfinity:
+			case SpecialReal.MinusInfinity:
 				return new Uint8Array([0x41]);
 		}
 	}
 }
 
 export const enum SpecialReal {
-	Infinity = 0,
-	NegativeInfinity
+	PlusInfinity = 0,
+	MinusInfinity
 }
 
 export class ASN1RealZero implements ASN1Value {
