@@ -652,9 +652,18 @@ export const enum ASN1EncodingType {
 	Constructed = 1
 }
 
-export function encodeObjectIdentifier(components: number[]): Uint8Array {
+export function encodeObjectIdentifier(id: string): Uint8Array {
+	const parts = id.split(".");
+	const components: number[] = [];
+	for (let i = 0; i < parts.length; i++) {
+		const parsed = Number(parts[i]);
+		if (!Number.isInteger(parsed) || parsed < 0) {
+			throw new TypeError("Invalid object identifier");
+		}
+		components[i] = parsed;
+	}
 	if (components.length < 2) {
-		throw new TypeError();
+		throw new TypeError("Invalid object identifier");
 	}
 	const firstSubidentifier = components[0] * 40 + components[1];
 	const buffer = new DynamicBuffer(0);

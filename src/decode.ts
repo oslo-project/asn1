@@ -91,8 +91,8 @@ function decodeASN1IntoKnownValues(
 		if (decoded.contents.byteLength < 1) {
 			throw new ASN1InvalidError();
 		}
-		const unusedBits = decoded.contents[1];
-		if (unusedBits < 8) {
+		const unusedBits = decoded.contents[0];
+		if (unusedBits > 7) {
 			throw new ASN1InvalidError();
 		}
 		const value = decoded.contents.slice(1);
@@ -149,42 +149,43 @@ function decodeASN1IntoKnownValues(
 		if (decoded.contents[0] >> 7 === 1) {
 			// Binary
 			let base: RealBinaryEncodingBase;
-			if (((decoded.contents[0] >> 4) & 0x01) === 0x00) {
+			if (((decoded.contents[0] >> 4) & 0x03) === 0x00) {
 				base = RealBinaryEncodingBase.Base2;
-			} else if (((decoded.contents[0] >> 4) & 0x01) === 0x01) {
+			} else if (((decoded.contents[0] >> 4) & 0x03) === 0x01) {
 				base = RealBinaryEncodingBase.Base8;
-			} else if (((decoded.contents[0] >> 4) & 0x01) === 0x02) {
+			} else if (((decoded.contents[0] >> 4) & 0x03) === 0x02) {
 				base = RealBinaryEncodingBase.Base16;
 			} else {
 				throw new ASN1InvalidError();
 			}
-			const scalingFactor = (decoded.contents[0] >> 2) & 0x02;
+			const scalingFactor = (decoded.contents[0] >> 2) & 0x03;
 			let exponent: bigint;
 			let encodedExponentSize: number;
-			if ((decoded.contents[0] & 0x02) === 0x00) {
+			if ((decoded.contents[0] & 0x03) === 0x00) {
 				if (decoded.contents.byteLength < 2) {
 					throw new ASN1InvalidError();
 				}
 				exponent = toVariableInt(decoded.contents.slice(1, 2));
 				encodedExponentSize = 1;
-			} else if ((decoded.contents[0] & 0x02) === 0x01) {
+			} else if ((decoded.contents[0] & 0x03) === 0x01) {
 				if (decoded.contents.byteLength < 3) {
 					throw new ASN1InvalidError();
 				}
 				exponent = toVariableInt(decoded.contents.slice(1, 3));
 				encodedExponentSize = 2;
-			} else if ((decoded.contents[0] & 0x02) === 0x02) {
+			} else if ((decoded.contents[0] & 0x03) === 0x02) {
 				if (decoded.contents.byteLength < 4) {
 					throw new ASN1InvalidError();
 				}
 				exponent = toVariableInt(decoded.contents.slice(1, 4));
 				encodedExponentSize = 3;
-			} else if ((decoded.contents[0] & 0x02) === 0x03) {
+			} else if ((decoded.contents[0] & 0x03) === 0x03) {
 				if (decoded.contents.byteLength < 2) {
 					throw new ASN1InvalidError();
 				}
 				const exponentSize = decoded.contents[1];
-				if (exponentSize < 4) {
+				// in DER, it should really be at least 4
+				if (exponentSize < 1) {
 					throw new ASN1InvalidError();
 				}
 				if (decoded.contents.byteLength < 2 + exponentSize) {
@@ -278,7 +279,6 @@ function decodeASN1IntoKnownValues(
 		}
 		return [new ASN1Set(value), size];
 	}
-
 	if (decoded.tag === ASN1_UNIVERSAL_TAG.UTF8_STRING) {
 		if (decoded.type !== ASN1EncodingType.Primitive) {
 			throw new ASN1InvalidError();
@@ -390,19 +390,19 @@ function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
 	}
 
 	let encodingType: ASN1EncodingType;
-	if (((data[0] >> 4) & 0x01) === 0) {
+	if (((data[0] >> 5) & 0x01) === 0) {
 		encodingType = ASN1EncodingType.Primitive;
-	} else if (((data[0] >> 4) & 0x01) === 1) {
+	} else if (((data[0] >> 5) & 0x01) === 1) {
 		encodingType = ASN1EncodingType.Constructed;
 	} else {
 		// unreachable
 		throw new ASN1InvalidError();
 	}
 
-	let tag = 0;
-	let offset = 2;
-	if ((data[1] & 0x1f) < 31) {
-		tag = data[1] & 0x1f;
+	let tag: number;
+	let offset = 1;
+	if ((data[0] & 0x1f) < 31) {
+		tag = data[0] & 0x1f;
 	} else {
 		try {
 			const [decodedTag, tagSize] = toVariableLengthQuantityBigEndian(data.slice(offset));
@@ -424,6 +424,7 @@ function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
 	let contentLength = 0;
 	if (data[offset] >> 7 === 0) {
 		contentLength = data[offset] & 0x7f;
+		offset++;
 	} else {
 		try {
 			const [decodedContentLength, contentLengthSize] = toVariableLengthQuantityBigEndian(
