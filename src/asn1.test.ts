@@ -17,7 +17,9 @@ import {
 	encodeObjectIdentifier,
 	RealBinaryEncodingBase,
 	RealDecimalEncodingFormat,
-	SpecialReal
+	SpecialReal,
+	ASN1Class,
+	ASN1EncodingType
 } from "./asn1.js";
 
 test("encodeObjectIdentifier()", () => {
@@ -182,6 +184,37 @@ describe("ASN1Sequence", () => {
 			]).encodeContents()
 		).toStrictEqual(new Uint8Array([0x01, 0x01, 0xff, 0x01, 0x01, 0x00, 0x01, 0x01, 0xff]));
 	});
+
+	test("ASN1Sequence.toObject()", () => {
+		expect(
+			new ASN1Sequence([
+				new ASN1Boolean(true),
+				new ASN1Boolean(false),
+				new ASN1Boolean(true)
+			]).toObject(["a", "b", "c"])
+		).toStrictEqual({
+			a: new ASN1Boolean(true),
+			b: new ASN1Boolean(false),
+			c: new ASN1Boolean(true)
+		});
+	});
+
+	test("ASN1Sequence.isSequenceOfSingleType()", () => {
+		expect(
+			new ASN1Sequence([
+				new ASN1Boolean(true),
+				new ASN1Boolean(false),
+				new ASN1Boolean(true)
+			]).isSequenceOfSingleType(ASN1Class.Universal, ASN1EncodingType.Primitive, 1)
+		).toBe(true);
+		expect(
+			new ASN1Sequence([
+				new ASN1Boolean(true),
+				new ASN1Boolean(false),
+				new ASN1Integer(1n)
+			]).isSequenceOfSingleType(ASN1Class.Universal, ASN1EncodingType.Primitive, 1)
+		).toBe(false);
+	});
 });
 
 describe("ASN1Set", () => {
@@ -193,6 +226,23 @@ describe("ASN1Set", () => {
 				new ASN1Boolean(true)
 			]).encodeContents()
 		).toStrictEqual(new Uint8Array([0x01, 0x01, 0xff, 0x01, 0x01, 0x00, 0x01, 0x01, 0xff]));
+	});
+
+	test("ASN1Set.isSetOfSingleType()", () => {
+		expect(
+			new ASN1Set([
+				new ASN1Boolean(true),
+				new ASN1Boolean(false),
+				new ASN1Boolean(true)
+			]).isSetOfSingleType(ASN1Class.Universal, ASN1EncodingType.Primitive, 1)
+		).toBe(true);
+		expect(
+			new ASN1Set([
+				new ASN1Boolean(true),
+				new ASN1Boolean(false),
+				new ASN1Integer(1n)
+			]).isSetOfSingleType(ASN1Class.Universal, ASN1EncodingType.Primitive, 1)
+		).toBe(false);
 	});
 });
 
