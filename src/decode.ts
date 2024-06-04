@@ -370,7 +370,7 @@ function decodeASN1IntoKnownValues(
 	throw new ASN1InvalidError();
 }
 
-function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
+export function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
 	if (data.byteLength < 2) {
 		throw new ASN1InvalidError();
 	}
@@ -399,20 +399,29 @@ function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
 		throw new ASN1InvalidError();
 	}
 
+	let offset = 0;
+
 	let tag: number;
-	let offset = 1;
 	if ((data[0] & 0x1f) < 31) {
 		tag = data[0] & 0x1f;
+		offset++;
 	} else {
+		offset++;
+
+		let decodedTag: bigint;
+		let tagSize: number;
 		try {
-			const [decodedTag, tagSize] = toVariableLengthQuantityBigEndian(data.slice(offset));
-			tag = Number(decodedTag);
-			offset += tagSize;
+			[decodedTag, tagSize] = toVariableLengthQuantityBigEndian(data.slice(offset), 2);
 		} catch {
 			throw new ASN1InvalidError();
 		}
+		if (decodedTag > 16384n) {
+			throw new ASN1InvalidError();
+		}
+		tag = Number(decodedTag);
+		offset += tagSize;
 	}
-	if (tag > 16384) {
+	if (data.byteLength < offset) {
 		throw new ASN1InvalidError();
 	}
 
@@ -426,19 +435,19 @@ function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: number] {
 		contentLength = data[offset] & 0x7f;
 		offset++;
 	} else {
-		try {
-			const [decodedContentLength, contentLengthSize] = toVariableLengthQuantityBigEndian(
-				data.slice(offset)
-			);
-			contentLength = Number(decodedContentLength);
-			offset += contentLengthSize;
-		} catch {
+		const contentLengthSize = data[offset] & 0x7f;
+		offset++;
+		if (contentLengthSize < 1 || data.byteLength < offset + contentLengthSize) {
 			throw new ASN1InvalidError();
 		}
+		const decodedContentLength = toVariableUint(data.slice(offset, offset + contentLengthSize));
+		offset += contentLengthSize;
+		contentLength = Number(decodedContentLength);
 	}
 	if (data.length < offset + contentLength) {
 		throw new ASN1InvalidError();
 	}
+
 	const value = data.slice(offset, offset + contentLength);
 	const result = new ASN1EncodedValue(asn1Class, encodingType, tag, value);
 	return [result, offset + contentLength];

@@ -76,7 +76,8 @@ export function variableLengthQuantityBigEndian(value: bigint): Uint8Array {
 }
 
 export function toVariableLengthQuantityBigEndian(
-	bytes: Uint8Array
+	bytes: Uint8Array,
+	maxBytes: number
 ): [value: bigint, size: number] {
 	let value = 0n;
 	for (let i = 0; i < bytes.byteLength; i++) {
@@ -84,6 +85,9 @@ export function toVariableLengthQuantityBigEndian(
 		if (bytes[i] >> 7 === 0) {
 			return [value, i + 1];
 		}
+		if (i + 1 > maxBytes) {
+			throw new Error("Data too large");
+		}
 	}
-	throw new TypeError("Variable length quantity: no ending");
+	throw new TypeError("Invalid variable length quantity");
 }

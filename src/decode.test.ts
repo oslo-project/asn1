@@ -1,10 +1,13 @@
 import { test, expect, describe } from "vitest";
-import { decodeASN1NoLeftoverBytes } from "./decode.js";
+import { decodeASN1NoLeftoverBytes, parseASN1 } from "./decode.js";
 import {
 	ANS1GeneralizedTime,
 	ANS1UTCTime,
 	ASN1BitString,
 	ASN1Boolean,
+	ASN1Class,
+	ASN1EncodedValue,
+	ASN1EncodingType,
 	ASN1IA5String,
 	ASN1Integer,
 	ASN1Null,
@@ -23,6 +26,70 @@ import {
 	RealDecimalEncodingFormat,
 	SpecialReal
 } from "./asn1";
+
+test("parseASN1", () => {
+	expect(parseASN1(new Uint8Array([0b00000000, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 0, new Uint8Array()),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0b01000000, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Application, ASN1EncodingType.Primitive, 0, new Uint8Array()),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0b10000000, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(
+			ASN1Class.ContextSpecific,
+			ASN1EncodingType.Primitive,
+			0,
+			new Uint8Array()
+		),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0b11000000, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Private, ASN1EncodingType.Primitive, 0, new Uint8Array()),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0b00100000, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Constructed, 0, new Uint8Array()),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0x01, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 1, new Uint8Array()),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0x1e, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 30, new Uint8Array()),
+		2
+	]);
+
+	expect(parseASN1(new Uint8Array([0x1f, 0xc0, 0x00, 0x00]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 8192, new Uint8Array()),
+		4
+	]);
+
+	expect(parseASN1(new Uint8Array([0x00, 0x7f, ...new Uint8Array(127)]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 0, new Uint8Array(127)),
+		129
+	]);
+
+	expect(parseASN1(new Uint8Array([0x00, 0x81, 0x80, ...new Uint8Array(128)]))).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 0, new Uint8Array(128)),
+		131
+	]);
+
+	expect(
+		parseASN1(new Uint8Array([0x00, 0x82, 0x01, 0x00, ...new Uint8Array(256)]))
+	).toStrictEqual([
+		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 0, new Uint8Array(256)),
+		256 + 4
+	]);
+});
 
 describe("decodeASN1IntoKnownValues()", () => {
 	test("Boolean", () => {
