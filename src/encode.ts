@@ -2,7 +2,7 @@ import { ASN1Class, ASN1EncodingType } from "./asn1.js";
 import { variableLengthQuantityBigEndian, variableUintToBytesBigEndian } from "./integer.js";
 import type { ASN1Value } from "./asn1.js";
 import { DynamicBuffer } from "@oslojs/binary";
-import { ASN1InvalidError } from "./decode.js";
+import { ASN1InvalidError } from "./error.js";
 
 export function encodeASN1(asn1: ASN1Value): Uint8Array {
 	const encodedContents = asn1.encodeContents();

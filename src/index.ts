@@ -23,13 +23,8 @@ export {
 	ASN1UTF8String,
 	encodeObjectIdentifier
 } from "./asn1.js";
-export {
-	decodeASN1,
-	decodeASN1NoLeftoverBytes,
-	ASN1InvalidError,
-	ASN1LeftoverBytesError,
-	ASN1TooDeepError
-} from "./decode.js";
+export { decodeASN1, decodeASN1NoLeftoverBytes } from "./decode.js";
 export { encodeASN1 } from "./encode.js";
+export { ASN1InvalidError, ASN1LeftoverBytesError, ASN1TooDeepError } from "./error.js";
 
 export type { ASN1Value } from "./asn1.js";

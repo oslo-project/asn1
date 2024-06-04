@@ -1,4 +1,4 @@
-import { ASN1InvalidError } from "./decode.js";
+import { ASN1InvalidError } from "./error.js";
 import { DynamicBuffer } from "@oslojs/binary";
 import {
 	variableLengthQuantityBigEndian,

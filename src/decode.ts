@@ -30,6 +30,7 @@ import { toVariableInt, toVariableLengthQuantityBigEndian, toVariableUint } from
 import { decodeASCII } from "./string.js";
 
 import type { ASN1Value } from "./asn1.js";
+import { ASN1InvalidError, ASN1LeftoverBytesError, ASN1TooDeepError } from "./error.js";
 
 export function decodeASN1NoLeftoverBytes(data: Uint8Array, maxDepth: number): ASN1Value {
 	const [decoded, size] = decodeASN1IntoKnownValues(data, maxDepth, 0);
@@ -451,22 +452,4 @@ export function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: nu
 	const value = data.slice(offset, offset + contentLength);
 	const result = new ASN1EncodedValue(asn1Class, encodingType, tag, value);
 	return [result, offset + contentLength];
-}
-
-export class ASN1TooDeepError extends Error {
-	constructor() {
-		super("ASN.1 data exceeds maximum depth");
-	}
-}
-
-export class ASN1InvalidError extends Error {
-	constructor() {
-		super("Invalid ASN.1 data");
-	}
-}
-
-export class ASN1LeftoverBytesError extends Error {
-	constructor(count: number) {
-		super(`ASN.1 leftover bytes: ${count}`);
-	}
 }
