@@ -1,6 +1,6 @@
 export {
 	ASN1GeneralizedTime,
-	ASN1UTCTime as ASN1UTCTime,
+	ASN1UTCTime,
 	ASN1BitString,
 	ASN1Boolean,
 	ASN1Class,
