@@ -260,12 +260,24 @@ describe("ASN1GeneralizedTime", () => {
 			])
 		);
 	});
+
+	test("ASN1GeneralizedTime.toDate()", () => {
+		expect(new ASN1GeneralizedTime(2000, 12, 31, 10, 40, 54, 111).toDate()).toStrictEqual(
+			new Date("2000-12-31T10:40:54.111Z")
+		);
+	});
 });
 
 describe("ASN1UTCTime", () => {
 	test("ASN1UTCTime.encodeContents", () => {
 		expect(new ASN1UTCTime(0, 12, 31, 10, 40, 54).encodeContents()).toStrictEqual(
 			new Uint8Array([0x30, 0x30, 0x31, 0x32, 0x33, 0x31, 0x31, 0x30, 0x34, 0x30, 0x35, 0x34, 0x5a])
+		);
+	});
+
+	test("ASN1UTCTime.toDate()", () => {
+		expect(new ASN1UTCTime(0, 12, 31, 10, 40, 54).toDate(20)).toStrictEqual(
+			new Date("2000-12-31T10:40:54Z")
 		);
 	});
 });

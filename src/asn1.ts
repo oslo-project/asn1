@@ -613,6 +613,7 @@ export class ASN1UTCTime implements ASN1Value {
 		date.setUTCHours(this.hours);
 		date.setUTCMinutes(this.minutes);
 		date.setUTCSeconds(this.seconds);
+		date.setUTCMilliseconds(0);
 		return date;
 	}
 }
