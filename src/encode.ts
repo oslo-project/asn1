@@ -1,6 +1,8 @@
 import { ASN1Class, ASN1EncodingType } from "./asn1.js";
-import { variableLengthQuantityBigEndian } from "./integer.js";
+import { variableLengthQuantityBigEndian, variableUintToBytesBigEndian } from "./integer.js";
 import type { ASN1Value } from "./asn1.js";
+import { DynamicBuffer } from "@oslojs/binary";
+import { ASN1InvalidError } from "./decode.js";
 
 export function encodeASN1(asn1: ASN1Value): Uint8Array {
 	const encodedContents = asn1.encodeContents();
@@ -22,30 +24,28 @@ export function encodeASN1(asn1: ASN1Value): Uint8Array {
 		firstByte |= 0x20;
 	}
 
+	const buffer = new DynamicBuffer(1);
+
 	if (asn1.tag < 0x1f) {
 		firstByte |= asn1.tag;
-		const encodedContentsLength = variableLengthQuantityBigEndian(
-			BigInt(encodedContents.byteLength)
-		);
-		const encoded = new Uint8Array(
-			1 + encodedContentsLength.byteLength + encodedContents.byteLength
-		);
-		encoded[0] = firstByte;
-		encoded.set(encodedContentsLength, 1);
-		encoded.set(encodedContents, 1 + encodedContentsLength.byteLength);
-		return encoded;
+		buffer.writeByte(firstByte);
+	} else {
+		firstByte |= 0x1f;
+		buffer.writeByte(firstByte);
+		const encodedTagNumber = variableLengthQuantityBigEndian(BigInt(asn1.tag));
+		buffer.write(encodedTagNumber);
 	}
-	firstByte |= 0x1f;
-	const encodedTagNumber = variableLengthQuantityBigEndian(BigInt(asn1.tag));
-	const encodedContentsLength = variableLengthQuantityBigEndian(
-		BigInt(encodedContents.byteLength)
-	);
-	const encoded = new Uint8Array(
-		1 + encodedTagNumber.byteLength + encodedContentsLength.byteLength + encodedContents.byteLength
-	);
-	encoded[0] = firstByte;
-	encoded.set(encodedTagNumber, 1);
-	encoded.set(encodedContentsLength, 1 + encodedTagNumber.byteLength);
-	encoded.set(encodedContents, 1 + encodedTagNumber.byteLength + encodedContentsLength.byteLength);
-	return encoded;
+
+	if (encodedContents.byteLength < 128) {
+		buffer.writeByte(encodedContents.byteLength);
+	} else {
+		const encodedContentsLength = variableUintToBytesBigEndian(BigInt(encodedContents.byteLength));
+		if (encodedContentsLength.byteLength > 126) {
+			throw new ASN1InvalidError();
+		}
+		buffer.writeByte(encodedContentsLength.byteLength | 0x80);
+		buffer.write(encodedContentsLength);
+	}
+	buffer.write(encodedContents);
+	return buffer.bytes();
 }
