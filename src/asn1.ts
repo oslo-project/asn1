@@ -45,14 +45,14 @@ export class ASN1BitString implements ASN1Value {
 	public class = ASN1Class.Universal;
 	public type = ASN1EncodingType.Primitive;
 	public tag = ASN1_UNIVERSAL_TAG.BIT_STRING;
-	public value: Uint8Array;
+	public bytes: Uint8Array;
 	public length: number;
 
-	constructor(value: Uint8Array, length: number) {
-		if (length > value.byteLength * 8) {
+	constructor(bytes: Uint8Array, length: number) {
+		if (length > bytes.byteLength * 8) {
 			throw new TypeError();
 		}
-		this.value = value;
+		this.bytes = bytes;
 		this.length = length;
 	}
 
@@ -61,9 +61,9 @@ export class ASN1BitString implements ASN1Value {
 		if (remainingBitsInLastByte === 8) {
 			remainingBitsInLastByte = 0;
 		}
-		const encoded = new Uint8Array(this.value.byteLength + 1);
+		const encoded = new Uint8Array(this.bytes.byteLength + 1);
 		encoded[0] = remainingBitsInLastByte;
-		encoded.set(this.value, 1);
+		encoded.set(this.bytes, 1);
 		return encoded;
 	}
 }
@@ -282,17 +282,6 @@ export class ASN1Sequence implements ASN1Value {
 			buffer.write(encodeASN1(item));
 		}
 		return buffer.bytes();
-	}
-
-	public toObject<_Key extends string>(keys: _Key[]): Record<_Key, ASN1Value> {
-		if (this.items.length !== keys.length) {
-			throw new Error();
-		}
-		const result = {} as Record<_Key, ASN1Value>;
-		for (let i = 0; i < keys.length; i++) {
-			result[keys[i]] = this.items[i];
-		}
-		return result;
 	}
 
 	public isSequenceOfSingleType(
@@ -653,11 +642,11 @@ export const enum ASN1Class {
 
 export const enum ASN1EncodingType {
 	Primitive = 0,
-	Constructed = 1
+	Constructed
 }
 
-export function encodeObjectIdentifier(id: string): Uint8Array {
-	const parts = id.split(".");
+export function encodeObjectIdentifier(oid: string): Uint8Array {
+	const parts = oid.split(".");
 	const components: number[] = [];
 	for (let i = 0; i < parts.length; i++) {
 		const parsed = Number(parts[i]);

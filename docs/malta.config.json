@@ -1,0 +1,22 @@
+{
+	"name": "@oslojs/asn1",
+	"description": "An ASN.1 DER library for JavaScript.",
+	"domain": "https://asn1.oslojs.dev",
+	"twitter": "@pilcrowonpaper",
+	"asset_hashing": true,
+	"sidebar": [
+		{
+			"title": "API reference",
+			"pages": [["@oslojs/asn1", "/reference/main"]]
+		},
+		{
+			"title": "Links",
+			"pages": [
+				["GitHub", "https://github.com/oslo-project/asn1"],
+				["Oslo", "https://oslojs.dev"],
+				["Twitter", "https://twitter.com/pilcrowonpaper"],
+				["Donate", "https://github.com/sponsors/pilcrowOnPaper"]
+			]
+		}
+	]
+}

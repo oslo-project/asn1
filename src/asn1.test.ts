@@ -185,20 +185,6 @@ describe("ASN1Sequence", () => {
 		).toStrictEqual(new Uint8Array([0x01, 0x01, 0xff, 0x01, 0x01, 0x00, 0x01, 0x01, 0xff]));
 	});
 
-	test("ASN1Sequence.toObject()", () => {
-		expect(
-			new ASN1Sequence([
-				new ASN1Boolean(true),
-				new ASN1Boolean(false),
-				new ASN1Boolean(true)
-			]).toObject(["a", "b", "c"])
-		).toStrictEqual({
-			a: new ASN1Boolean(true),
-			b: new ASN1Boolean(false),
-			c: new ASN1Boolean(true)
-		});
-	});
-
 	test("ASN1Sequence.isSequenceOfSingleType()", () => {
 		expect(
 			new ASN1Sequence([
