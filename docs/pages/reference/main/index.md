@@ -1,8 +1,8 @@
 ---
-title: "@oslojs/cbor"
+title: "@oslojs/asn1"
 ---
 
-# @oslojs/cbor
+# @oslojs/asn1
 
 ## Classes
 

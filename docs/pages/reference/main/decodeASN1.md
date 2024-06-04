@@ -33,7 +33,7 @@ All other values are decoded as [`ASN1EncodedValue`](/reference/main/ASN1Encoded
 It can throw one of:
 
 - [`ASN1InvalidError`](/reference/main/ASN1InvalidError): Invalid ASN.1 DER
-- [`ASN1TooDeepError`](/reference/main/CBORTooDeepError): The ASN.1 data is too deep
+- [`ASN1TooDeepError`](/reference/main/ASN1TooDeepError): The ASN.1 data is too deep
 
 Implementations may not strictly adhere to DER and this function may accept BER-encoded values.
 

@@ -13,7 +13,7 @@ A JavaScript library for encoding and decoding ASN.1 with Distinguished Encoding
 - Fully typed
 
 ```ts
-import { decodeASN1NoLeftoverBytes, ASN1Integer } from "@oslojs/cbor";
+import { decodeASN1NoLeftoverBytes, ASN1Integer } from "@oslojs/asn1";
 
 const MAX_DEPTH = 10;
 const encoded = new Uint8Array([0x02, 0x01, 0x01]);
@@ -28,5 +28,5 @@ if (result instanceof ASN1Integer) {
 ## Installation
 
 ```
-npm i @oslojs/cbor
+npm i @oslojs/asn1
 ```
