@@ -108,13 +108,18 @@ test("toVariableLengthQuantityBigEndian()", () => {
 });
 
 test("toVariableLengthQuantityBigEndian()", () => {
-	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x01]))).toStrictEqual([1n, 1]);
-	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x7f]))).toStrictEqual([0x7fn, 1]);
-	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x81, 0x7f]))).toStrictEqual([0xffn, 2]);
-	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x83, 0xff, 0x7f]))).toStrictEqual([0xffffn, 3]);
-	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x83, 0xff, 0x7f, 0x00]))).toStrictEqual([
+	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x01]), 10)).toStrictEqual([1n, 1]);
+	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x7f]), 10)).toStrictEqual([0x7fn, 1]);
+	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x81, 0x7f]), 10)).toStrictEqual([
+		0xffn,
+		2
+	]);
+	expect(toVariableLengthQuantityBigEndian(new Uint8Array([0x83, 0xff, 0x7f]), 10)).toStrictEqual([
 		0xffffn,
 		3
 	]);
-	expect(() => toVariableLengthQuantityBigEndian(new Uint8Array([0x83, 0xff]))).toThrowError();
+	expect(
+		toVariableLengthQuantityBigEndian(new Uint8Array([0x83, 0xff, 0x7f, 0x00]), 10)
+	).toStrictEqual([0xffffn, 3]);
+	expect(() => toVariableLengthQuantityBigEndian(new Uint8Array([0x83, 0xff]), 10)).toThrowError();
 });
