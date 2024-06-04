@@ -57,7 +57,10 @@ export class ASN1BitString implements ASN1Value {
 	}
 
 	public encodeContents(): Uint8Array {
-		const remainingBitsInLastByte = 8 - (this.length % 8);
+		let remainingBitsInLastByte = 8 - (this.length % 8);
+		if (remainingBitsInLastByte === 8) {
+			remainingBitsInLastByte = 0;
+		}
 		const encoded = new Uint8Array(this.value.byteLength + 1);
 		encoded[0] = remainingBitsInLastByte;
 		encoded.set(this.value, 1);
@@ -99,9 +102,9 @@ export class ASN1RealBinaryEncoding implements ASN1Value {
 
 	public encodeContents(): Uint8Array {
 		let N: bigint, scalingFactor: number;
-		if (this.mantissa % 16n === 0n) {
-			N = absBigInt(this.mantissa) / 16n;
-			scalingFactor = 4;
+		if (this.mantissa % 8n === 0n) {
+			N = absBigInt(this.mantissa) / 8n;
+			scalingFactor = 3;
 		} else if (this.mantissa % 4n === 0n) {
 			N = absBigInt(this.mantissa) / 4n;
 			scalingFactor = 2;
@@ -118,7 +121,7 @@ export class ASN1RealBinaryEncoding implements ASN1Value {
 			firstByte |= 0x40;
 		}
 		if (this.base === RealBinaryEncodingBase.Base8) {
-			firstByte |= 0x01;
+			firstByte |= 0x10;
 		} else if (this.base === RealBinaryEncodingBase.Base16) {
 			firstByte |= 0x20;
 		}
@@ -134,14 +137,14 @@ export class ASN1RealBinaryEncoding implements ASN1Value {
 			encodedExponent = new Uint8Array(2);
 			encodedExponent.set(exponentBytes);
 		} else if (exponentBytes.byteLength === 3) {
-			firstByte |= 0x10;
+			firstByte |= 0x02;
 			encodedExponent = new Uint8Array(3);
 			encodedExponent.set(exponentBytes);
 		} else {
 			if (exponentBytes.byteLength > 255) {
 				throw new ASN1InvalidError();
 			}
-			firstByte |= 0x11;
+			firstByte |= 0x03;
 			encodedExponent = new Uint8Array(exponentBytes.byteLength + 1);
 			encodedExponent[0] = exponentBytes.byteLength;
 			encodedExponent.set(exponentBytes, 1);
@@ -463,7 +466,7 @@ export class ASN1IA5String implements ASN1Value {
 	}
 }
 
-export class ANS1GeneralizedTime implements ASN1Value {
+export class ASN1GeneralizedTime implements ASN1Value {
 	public class = ASN1Class.Universal;
 	public type = ASN1EncodingType.Primitive;
 	public tag = ASN1_UNIVERSAL_TAG.GENERALIZED_TIME;
@@ -542,7 +545,7 @@ export class ANS1GeneralizedTime implements ASN1Value {
 	}
 }
 
-export class ANS1UTCTime implements ASN1Value {
+export class ASN1UTCTime implements ASN1Value {
 	public class = ASN1Class.Universal;
 	public type = ASN1EncodingType.Primitive;
 	public tag = ASN1_UNIVERSAL_TAG.UTC_TIME;
@@ -590,7 +593,7 @@ export class ANS1UTCTime implements ASN1Value {
 
 	public encodeContents(): Uint8Array {
 		let text = this.year.toString().padStart(2, "0");
-		text += (this.month.toString() + 1).padStart(2, "0");
+		text += this.month.toString().padStart(2, "0");
 		text += this.date.toString().padStart(2, "0");
 		text += this.hours.toString().padStart(2, "0");
 		text += this.minutes.toString().padStart(2, "0");

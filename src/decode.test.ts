@@ -1,8 +1,8 @@
 import { test, expect, describe } from "vitest";
 import { decodeASN1NoLeftoverBytes, parseASN1 } from "./decode.js";
 import {
-	ANS1GeneralizedTime,
-	ANS1UTCTime,
+	ASN1GeneralizedTime,
+	ASN1UTCTime,
 	ASN1BitString,
 	ASN1Boolean,
 	ASN1Class,
@@ -83,12 +83,12 @@ test("parseASN1", () => {
 		131
 	]);
 
-	expect(
-		parseASN1(new Uint8Array([0x00, 0x82, 0x01, 0x00, ...new Uint8Array(256)]))
-	).toStrictEqual([
-		new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 0, new Uint8Array(256)),
-		256 + 4
-	]);
+	expect(parseASN1(new Uint8Array([0x00, 0x82, 0x01, 0x00, ...new Uint8Array(256)]))).toStrictEqual(
+		[
+			new ASN1EncodedValue(ASN1Class.Universal, ASN1EncodingType.Primitive, 0, new Uint8Array(256)),
+			256 + 4
+		]
+	);
 });
 
 describe("decodeASN1IntoKnownValues()", () => {
@@ -103,10 +103,10 @@ describe("decodeASN1IntoKnownValues()", () => {
 
 	test("Integer", () => {
 		expect(decodeASN1NoLeftoverBytes(new Uint8Array([0x02, 0x01, 0x00]), 10)).toStrictEqual(
-			new ASN1Integer(0x00n)
+			new ASN1Integer(0n)
 		);
 		expect(decodeASN1NoLeftoverBytes(new Uint8Array([0x02, 0x01, 0x01]), 10)).toStrictEqual(
-			new ASN1Integer(0x01n)
+			new ASN1Integer(1n)
 		);
 		expect(decodeASN1NoLeftoverBytes(new Uint8Array([0x02, 0x02, 0x00, 0x80]), 10)).toStrictEqual(
 			new ASN1Integer(128n)
@@ -302,18 +302,6 @@ describe("decodeASN1IntoKnownValues()", () => {
 		).toStrictEqual(new ASN1NumericString(new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05])));
 	});
 
-	test("NumericString", () => {
-		expect(
-			decodeASN1NoLeftoverBytes(new Uint8Array([0x12, 0x05, 0x01, 0x02, 0x03, 0x04, 0x05]), 10)
-		).toStrictEqual(new ASN1NumericString(new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05])));
-	});
-
-	test("NumericString", () => {
-		expect(
-			decodeASN1NoLeftoverBytes(new Uint8Array([0x12, 0x05, 0x01, 0x02, 0x03, 0x04, 0x05]), 10)
-		).toStrictEqual(new ASN1NumericString(new Uint8Array([0x01, 0x02, 0x03, 0x04, 0x05])));
-	});
-
 	test("GeneralizedTime", () => {
 		expect(
 			decodeASN1NoLeftoverBytes(
@@ -323,7 +311,7 @@ describe("decodeASN1IntoKnownValues()", () => {
 				]),
 				10
 			)
-		).toStrictEqual(new ANS1GeneralizedTime(2000, 12, 31, 10, 40, 54, 0));
+		).toStrictEqual(new ASN1GeneralizedTime(2000, 12, 31, 10, 40, 54, 0));
 		expect(
 			decodeASN1NoLeftoverBytes(
 				new Uint8Array([
@@ -332,7 +320,7 @@ describe("decodeASN1IntoKnownValues()", () => {
 				]),
 				10
 			)
-		).toStrictEqual(new ANS1GeneralizedTime(2000, 12, 31, 10, 40, 54, 111));
+		).toStrictEqual(new ASN1GeneralizedTime(2000, 12, 31, 10, 40, 54, 111));
 	});
 
 	test("UTCTime", () => {
@@ -343,6 +331,6 @@ describe("decodeASN1IntoKnownValues()", () => {
 				]),
 				10
 			)
-		).toStrictEqual(new ANS1UTCTime(0, 12, 31, 10, 40, 54));
+		).toStrictEqual(new ASN1UTCTime(0, 12, 31, 10, 40, 54));
 	});
 });

@@ -21,9 +21,9 @@ import {
 	ASN1NumericString,
 	ASN1PrintableString,
 	ASN1IA5String,
-	ANS1GeneralizedTime,
+	ASN1GeneralizedTime,
 	ASN1EncodedValue,
-	ANS1UTCTime,
+	ASN1UTCTime,
 	ASN1_UNIVERSAL_TAG
 } from "./asn1.js";
 import { toVariableInt, toVariableLengthQuantityBigEndian, toVariableUint } from "./integer.js";
@@ -332,7 +332,7 @@ function decodeASN1IntoKnownValues(
 			milliseconds = Number(decimalPart.padEnd(3, "0"));
 		}
 		return [
-			new ANS1GeneralizedTime(
+			new ASN1GeneralizedTime(
 				Number(wholePart.slice(0, 4)),
 				Number(wholePart.slice(4, 6)),
 				Number(wholePart.slice(6, 8)),
@@ -355,7 +355,7 @@ function decodeASN1IntoKnownValues(
 		}
 		decodedString = decodedString.replace("Z", "");
 		return [
-			new ANS1UTCTime(
+			new ASN1UTCTime(
 				Number(decodedString.slice(0, 2)),
 				Number(decodedString.slice(2, 4)),
 				Number(decodedString.slice(4, 6)),
