@@ -7,7 +7,7 @@ title: "RealDecimalEncodingFormat"
 ## Definition
 
 ```ts
-const enum RealDecimalEncodingFormat {
+enum RealDecimalEncodingFormat {
 	ISO6093NR1,
 	ISO6093NR2,
 	ISO6093NR3

@@ -7,7 +7,7 @@ title: "SpecialReal"
 ## Definition
 
 ```ts
-const enum SpecialReal {
+enum SpecialReal {
 	PlusInfinity,
 	MinusInfinity
 }

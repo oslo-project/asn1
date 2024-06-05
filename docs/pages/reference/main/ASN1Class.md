@@ -7,7 +7,7 @@ title: "ASN1Class"
 ## Definition
 
 ```ts
-const enum ASN1Class {
+enum ASN1Class {
 	Universal,
 	Application,
 	ContextSpecific,

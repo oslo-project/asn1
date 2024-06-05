@@ -166,7 +166,7 @@ function absBigInt(value: bigint): bigint {
 	return value;
 }
 
-export const enum RealBinaryEncodingBase {
+export enum RealBinaryEncodingBase {
 	Base2 = 0,
 	Base8,
 	Base16
@@ -199,7 +199,7 @@ export class ASN1RealDecimalEncoding implements ASN1Value {
 	}
 }
 
-export const enum RealDecimalEncodingFormat {
+export enum RealDecimalEncodingFormat {
 	ISO6093NR1 = 0,
 	ISO6093NR2,
 	ISO6093NR3
@@ -225,7 +225,7 @@ export class ASN1SpecialReal implements ASN1Value {
 	}
 }
 
-export const enum SpecialReal {
+export enum SpecialReal {
 	PlusInfinity = 0,
 	MinusInfinity
 }
@@ -633,14 +633,14 @@ export interface ASN1Value {
 	encodeContents(): Uint8Array;
 }
 
-export const enum ASN1Class {
+export enum ASN1Class {
 	Universal = 0,
 	Application,
 	ContextSpecific,
 	Private
 }
 
-export const enum ASN1EncodingType {
+export enum ASN1EncodingType {
 	Primitive = 0,
 	Constructed
 }

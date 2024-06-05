@@ -7,7 +7,7 @@ title: "RealBinaryEncodingBase"
 ## Definition
 
 ```ts
-const enum RealBinaryEncodingBase {
+enum RealBinaryEncodingBase {
 	Base2,
 	Base8,
 	Base16

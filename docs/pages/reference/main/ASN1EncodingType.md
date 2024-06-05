@@ -7,7 +7,7 @@ title: "ASN1EncodingType"
 ## Definition
 
 ```ts
-const enum ASN1EncodingType {
+enum ASN1EncodingType {
 	Primitive,
 	Constructed
 }
