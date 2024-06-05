@@ -268,7 +268,7 @@ export class ASN1Null implements ASN1Value {
 
 export class ASN1Sequence implements ASN1Value {
 	public class = ASN1Class.Universal;
-	public type = ASN1EncodingType.Primitive;
+	public type = ASN1EncodingType.Constructed;
 	public tag = ASN1_UNIVERSAL_TAG.SEQUENCE;
 	public items: ASN1Value[];
 
@@ -300,7 +300,7 @@ export class ASN1Sequence implements ASN1Value {
 
 export class ASN1Set implements ASN1Value {
 	public class = ASN1Class.Universal;
-	public type = ASN1EncodingType.Primitive;
+	public type = ASN1EncodingType.Constructed;
 	public tag = ASN1_UNIVERSAL_TAG.SET;
 	public items: ASN1Value[];
 
