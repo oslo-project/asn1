@@ -33,11 +33,11 @@ interface Properties {
 	class: $$ASN1Class;
 	type: $$ASN1EncodingType;
 	tag: number;
-	value: Uint8Array;
+	encodedId: Uint8Array;
 }
 ```
 
 - `class`
 - `type`
 - `tag`
-- `value`
+- `encodedId`: The encoded object identifier.
