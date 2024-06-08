@@ -1,5 +1,9 @@
 # @oslojs/asn1
 
+## 0.1.3
+
+- Update dependencies.
+
 ## 0.1.2
 
 - Replace `const enum` with `enum`

@@ -25,7 +25,7 @@ import {
 	RealBinaryEncodingBase,
 	RealDecimalEncodingFormat,
 	SpecialReal
-} from "./asn1";
+} from "./asn1.js";
 
 test("parseASN1", () => {
 	expect(parseASN1(new Uint8Array([0b00000000, 0x00]))).toStrictEqual([

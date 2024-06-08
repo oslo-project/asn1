@@ -1,10 +1,6 @@
 import { ASN1InvalidError } from "./error.js";
-import { DynamicBuffer } from "@oslojs/binary";
-import {
-	variableLengthQuantityBigEndian,
-	variableIntToBytesBigEndian,
-	variableUintToBytesBigEndian
-} from "./integer.js";
+import { bigIntBytes, DynamicBuffer } from "@oslojs/binary";
+import { bigIntTwosComplementBytes, variableLengthQuantityBytes } from "./integer.js";
 import { decodeASCII } from "./string.js";
 import { encodeASN1 } from "./encode.js";
 
@@ -37,7 +33,7 @@ export class ASN1Integer implements ASN1Value {
 	}
 
 	public encodeContents(): Uint8Array {
-		return variableIntToBytesBigEndian(this.value);
+		return bigIntTwosComplementBytes(this.value);
 	}
 }
 
@@ -79,7 +75,7 @@ export class ASN1Enumerated implements ASN1Value {
 	}
 
 	public encodeContents(): Uint8Array {
-		return variableIntToBytesBigEndian(this.value);
+		return bigIntTwosComplementBytes(this.value);
 	}
 }
 
@@ -128,7 +124,7 @@ export class ASN1RealBinaryEncoding implements ASN1Value {
 		firstByte |= scalingFactor << 2;
 
 		let encodedExponent: Uint8Array;
-		const exponentBytes = variableIntToBytesBigEndian(this.exponent);
+		const exponentBytes = bigIntTwosComplementBytes(this.exponent);
 		if (exponentBytes.byteLength === 1) {
 			encodedExponent = new Uint8Array(1);
 			encodedExponent.set(exponentBytes);
@@ -150,11 +146,11 @@ export class ASN1RealBinaryEncoding implements ASN1Value {
 			encodedExponent.set(exponentBytes, 1);
 		}
 
-		const encodedN = variableUintToBytesBigEndian(N);
-		const encoded = new Uint8Array(1 + encodedExponent.byteLength + encodedN.byteLength);
+		const nBytes = bigIntBytes(N);
+		const encoded = new Uint8Array(1 + encodedExponent.byteLength + nBytes.byteLength);
 		encoded[0] = firstByte;
 		encoded.set(encodedExponent, 1);
-		encoded.set(encodedN, 1 + encodedExponent.byteLength);
+		encoded.set(nBytes, 1 + encodedExponent.byteLength);
 		return encoded;
 	}
 }
@@ -660,9 +656,9 @@ export function encodeObjectIdentifier(oid: string): Uint8Array {
 	}
 	const firstSubidentifier = components[0] * 40 + components[1];
 	const buffer = new DynamicBuffer(0);
-	buffer.write(variableLengthQuantityBigEndian(BigInt(firstSubidentifier)));
+	buffer.write(variableLengthQuantityBytes(BigInt(firstSubidentifier)));
 	for (let i = 2; i < components.length; i++) {
-		buffer.write(variableLengthQuantityBigEndian(BigInt(components[i])));
+		buffer.write(variableLengthQuantityBytes(BigInt(components[i])));
 	}
 	return buffer.bytes();
 }

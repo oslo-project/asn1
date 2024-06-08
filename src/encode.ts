@@ -1,8 +1,10 @@
 import { ASN1Class, ASN1EncodingType } from "./asn1.js";
-import { variableLengthQuantityBigEndian, variableUintToBytesBigEndian } from "./integer.js";
-import type { ASN1Value } from "./asn1.js";
+import { variableLengthQuantityBytes } from "./integer.js";
 import { DynamicBuffer } from "@oslojs/binary";
 import { ASN1InvalidError } from "./error.js";
+import { bigIntBytes } from "@oslojs/binary";
+
+import type { ASN1Value } from "./asn1.js";
 
 export function encodeASN1(asn1: ASN1Value): Uint8Array {
 	const encodedContents = asn1.encodeContents();
@@ -32,14 +34,14 @@ export function encodeASN1(asn1: ASN1Value): Uint8Array {
 	} else {
 		firstByte |= 0x1f;
 		buffer.writeByte(firstByte);
-		const encodedTagNumber = variableLengthQuantityBigEndian(BigInt(asn1.tag));
+		const encodedTagNumber = variableLengthQuantityBytes(BigInt(asn1.tag));
 		buffer.write(encodedTagNumber);
 	}
 
 	if (encodedContents.byteLength < 128) {
 		buffer.writeByte(encodedContents.byteLength);
 	} else {
-		const encodedContentsLength = variableUintToBytesBigEndian(BigInt(encodedContents.byteLength));
+		const encodedContentsLength = bigIntBytes(BigInt(encodedContents.byteLength));
 		if (encodedContentsLength.byteLength > 126) {
 			throw new ASN1InvalidError();
 		}

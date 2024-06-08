@@ -26,11 +26,12 @@ import {
 	ASN1UTCTime,
 	ASN1_UNIVERSAL_TAG
 } from "./asn1.js";
-import { toVariableInt, toVariableLengthQuantityBigEndian, toVariableUint } from "./integer.js";
+import { bigIntFromTwosComplementBytes, variableLengthQuantityFromBytes } from "./integer.js";
 import { decodeASCII } from "./string.js";
+import { ASN1InvalidError, ASN1LeftoverBytesError, ASN1TooDeepError } from "./error.js";
+import { bigIntFromBytes } from "@oslojs/binary";
 
 import type { ASN1Value } from "./asn1.js";
-import { ASN1InvalidError, ASN1LeftoverBytesError, ASN1TooDeepError } from "./error.js";
 
 export function decodeASN1NoLeftoverBytes(data: Uint8Array, maxDepth: number): ASN1Value {
 	const [decoded, size] = decodeASN1IntoKnownValues(data, maxDepth, 0);
@@ -82,7 +83,7 @@ function decodeASN1IntoKnownValues(
 		if (decoded.contents.byteLength < 1) {
 			throw new ASN1InvalidError();
 		}
-		return [new ASN1Integer(toVariableInt(decoded.contents)), size];
+		return [new ASN1Integer(bigIntFromTwosComplementBytes(decoded.contents)), size];
 	}
 
 	if (decoded.tag === ASN1_UNIVERSAL_TAG.BIT_STRING) {
@@ -137,7 +138,7 @@ function decodeASN1IntoKnownValues(
 		if (decoded.contents.byteLength < 1) {
 			throw new ASN1InvalidError();
 		}
-		return [new ASN1Enumerated(toVariableInt(decoded.contents)), size];
+		return [new ASN1Enumerated(bigIntFromTwosComplementBytes(decoded.contents)), size];
 	}
 
 	if (decoded.tag === ASN1_UNIVERSAL_TAG.REAL) {
@@ -166,19 +167,19 @@ function decodeASN1IntoKnownValues(
 				if (decoded.contents.byteLength < 2) {
 					throw new ASN1InvalidError();
 				}
-				exponent = toVariableInt(decoded.contents.slice(1, 2));
+				exponent = bigIntFromTwosComplementBytes(decoded.contents.slice(1, 2));
 				encodedExponentSize = 1;
 			} else if ((decoded.contents[0] & 0x03) === 0x01) {
 				if (decoded.contents.byteLength < 3) {
 					throw new ASN1InvalidError();
 				}
-				exponent = toVariableInt(decoded.contents.slice(1, 3));
+				exponent = bigIntFromTwosComplementBytes(decoded.contents.slice(1, 3));
 				encodedExponentSize = 2;
 			} else if ((decoded.contents[0] & 0x03) === 0x02) {
 				if (decoded.contents.byteLength < 4) {
 					throw new ASN1InvalidError();
 				}
-				exponent = toVariableInt(decoded.contents.slice(1, 4));
+				exponent = bigIntFromTwosComplementBytes(decoded.contents.slice(1, 4));
 				encodedExponentSize = 3;
 			} else if ((decoded.contents[0] & 0x03) === 0x03) {
 				if (decoded.contents.byteLength < 2) {
@@ -192,7 +193,7 @@ function decodeASN1IntoKnownValues(
 				if (decoded.contents.byteLength < 2 + exponentSize) {
 					throw new ASN1InvalidError();
 				}
-				exponent = toVariableInt(decoded.contents.slice(2, 2 + exponentSize));
+				exponent = bigIntFromTwosComplementBytes(decoded.contents.slice(2, 2 + exponentSize));
 				encodedExponentSize = 1 + exponentSize;
 			} else {
 				// unreachable
@@ -201,7 +202,7 @@ function decodeASN1IntoKnownValues(
 			if (decoded.contents.byteLength === 1 + encodedExponentSize) {
 				throw new ASN1InvalidError();
 			}
-			const N = toVariableUint(decoded.contents.slice(1 + encodedExponentSize));
+			const N = bigIntFromBytes(decoded.contents.slice(1 + encodedExponentSize));
 			let mantissa = N * BigInt(2 ** scalingFactor);
 			if (((decoded.contents[0] >> 6) & 0x01) === 0x01) {
 				mantissa = mantissa * -1n;
@@ -412,7 +413,7 @@ export function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: nu
 		let decodedTag: bigint;
 		let tagSize: number;
 		try {
-			[decodedTag, tagSize] = toVariableLengthQuantityBigEndian(data.slice(offset), 2);
+			[decodedTag, tagSize] = variableLengthQuantityFromBytes(data.slice(offset), 2);
 		} catch {
 			throw new ASN1InvalidError();
 		}
@@ -441,7 +442,7 @@ export function parseASN1(data: Uint8Array): [result: ASN1EncodedValue, size: nu
 		if (contentLengthSize < 1 || data.byteLength < offset + contentLengthSize) {
 			throw new ASN1InvalidError();
 		}
-		const decodedContentLength = toVariableUint(data.slice(offset, offset + contentLengthSize));
+		const decodedContentLength = bigIntFromBytes(data.slice(offset, offset + contentLengthSize));
 		offset += contentLengthSize;
 		contentLength = Number(decodedContentLength);
 	}

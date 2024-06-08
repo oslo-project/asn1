@@ -1,4 +1,4 @@
-export function variableIntToBytesBigEndian(value: bigint): Uint8Array {
+export function bigIntTwosComplementBytes(value: bigint): Uint8Array {
 	if (value === 0n) {
 		return new Uint8Array(1);
 	}
@@ -19,22 +19,7 @@ export function variableIntToBytesBigEndian(value: bigint): Uint8Array {
 	return encoded;
 }
 
-export function variableUintToBytesBigEndian(value: bigint): Uint8Array {
-	if (value < 0n) {
-		throw new TypeError();
-	}
-	let byteLength = 1;
-	while (value > 2n ** BigInt(byteLength * 8) - 1n) {
-		byteLength++;
-	}
-	const encoded = new Uint8Array(byteLength);
-	for (let i = 0; i < encoded.byteLength; i++) {
-		encoded[i] = Number((value >> BigInt((encoded.byteLength - i - 1) * 8)) & 0xffn);
-	}
-	return encoded;
-}
-
-export function toVariableInt(bytes: Uint8Array): bigint {
+export function bigIntFromTwosComplementBytes(bytes: Uint8Array): bigint {
 	if (bytes.byteLength < 1) {
 		throw new TypeError("Empty Uint8Array");
 	}
@@ -48,18 +33,7 @@ export function toVariableInt(bytes: Uint8Array): bigint {
 	return decoded - (1n << BigInt(bytes.byteLength * 8));
 }
 
-export function toVariableUint(bytes: Uint8Array): bigint {
-	if (bytes.byteLength < 1) {
-		throw new TypeError("Empty Uint8Array");
-	}
-	let decoded = 0n;
-	for (let i = 0; i < bytes.byteLength; i++) {
-		decoded += BigInt(bytes[i]) << BigInt((bytes.byteLength - 1 - i) * 8);
-	}
-	return decoded;
-}
-
-export function variableLengthQuantityBigEndian(value: bigint): Uint8Array {
+export function variableLengthQuantityBytes(value: bigint): Uint8Array {
 	let bitLength = 7;
 	while (value > (1 << bitLength) - 1) {
 		bitLength += 7;
@@ -75,7 +49,7 @@ export function variableLengthQuantityBigEndian(value: bigint): Uint8Array {
 	return encoded;
 }
 
-export function toVariableLengthQuantityBigEndian(
+export function variableLengthQuantityFromBytes(
 	bytes: Uint8Array,
 	maxBytes: number
 ): [value: bigint, size: number] {
