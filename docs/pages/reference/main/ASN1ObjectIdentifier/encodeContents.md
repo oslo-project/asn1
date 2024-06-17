@@ -1,11 +1,11 @@
 ---
-title: "ASN1ObjectIdentifier.encodeContents()"
+title: "ASN1ObjectIdentifier.contents()"
 ---
 
-# ASN1ObjectIdentifier.encodeContents()
+# ASN1ObjectIdentifier.contents()
 
 ## Definition
 
 ```ts
-function encodeContents(): Uint8Array;
+function contents(): Uint8Array;
 ```

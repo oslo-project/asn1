@@ -4,7 +4,7 @@ title: "ASN1ObjectIdentifier"
 
 # ASN1ObjectIdentifier
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
 Represents an ASN.1 object identifier value.
 
@@ -13,31 +13,32 @@ See [`encodeObjectIdentifier()`](/reference/main/encodeObjectIdentifier) to enco
 ## Constructor
 
 ```ts
-function constructor(encodedIdentifier: Uint8Array): this;
+function constructor(encoded: Uint8Array): this;
 ```
 
 ### Parameters
 
-- `encodedIdentifier`: The encoded object identifier.
+- `encoded`: The encoded object identifier.
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1ObjectIdentifier/encodeContents)
+- [`contents()`](/reference/main/ASN1ObjectIdentifier/contents)
+- [`is()`](/reference/main/ASN1ObjectIdentifier/is)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	tag: number;
-	encodedId: Uint8Array;
+	encoded: Uint8Array;
 }
 ```
 
 - `class`
 - `type`
 - `tag`
-- `encodedId`: The encoded object identifier.
+- `encoded`: The encoded object identifier.

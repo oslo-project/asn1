@@ -1,11 +1,11 @@
 ---
-title: "ASN1Integer.encodeContents()"
+title: "ASN1Integer.contents()"
 ---
 
-# ASN1Integer.encodeContents()
+# ASN1Integer.contents()
 
 ## Definition
 
 ```ts
-function encodeContents(): Uint8Array;
+function contents(): Uint8Array;
 ```

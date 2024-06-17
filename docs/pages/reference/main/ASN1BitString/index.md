@@ -4,7 +4,7 @@ title: "ASN1BitString"
 
 # ASN1BitString
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
 Represents an ASN.1 bit string value.
 
@@ -21,16 +21,16 @@ function constructor(bytes: Uint8Array, length: number): this;
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1BitString/encodeContents)
+- [`contents()`](/reference/main/ASN1BitString/contents)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	tag: number;
 	bytes: Uint8Array;
 	length: number;

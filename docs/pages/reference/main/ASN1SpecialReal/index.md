@@ -4,7 +4,7 @@ title: "ASN1SpecialReal"
 
 # ASN1SpecialReal
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
 Represents an ASN.1 special real value.
 
@@ -21,17 +21,17 @@ function constructor(value: $$RealDecimalEncodingFormat): this;
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1SpecialReal/encodeContents)
+- [`contents()`](/reference/main/ASN1SpecialReal/contents)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 //$ RealDecimalEncodingFormat=/reference/main/RealDecimalEncodingFormat
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	tag: number;
 	value: $$RealDecimalEncodingFormat;
 }

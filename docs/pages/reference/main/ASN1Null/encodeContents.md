@@ -1,11 +1,11 @@
 ---
-title: "ASN1Null.encodeContents()"
+title: "ASN1Null.contents()"
 ---
 
-# ASN1Null.encodeContents()
+# ASN1Null.contents()
 
 ## Definition
 
 ```ts
-function encodeContents(): Uint8Array;
+function contents(): Uint8Array;
 ```

@@ -4,16 +4,15 @@ title: "encodeASN1()"
 
 # encodeASN1()
 
-Encodes [`ASN1Value`](/reference/main/ASN1Value) to `Uint8Array` with DER.
-
-**Note that it does not sort items in `ASN1Set` as required in DER.**
+Encodes [`ASN1Encodable`](/reference/main/ASN1Encodable) to `Uint8Array` with DER.
 
 ## Definition
 
 ```ts
-function encodeASN1(asn1: ASN1Value): Uint8Array;
+//$ ASN1Encodable=/reference/main/ASN1Encodable
+function encodeASN1(value: $$ASN1Encodable): Uint8Array;
 ```
 
 ### Parameters
 
-- `asn1`
+- `value`

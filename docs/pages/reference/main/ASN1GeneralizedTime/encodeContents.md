@@ -1,11 +1,11 @@
 ---
-title: "ASN1GeneralizedTime.encodeContents()"
+title: "ASN1GeneralizedTime.contents()"
 ---
 
-# ASN1GeneralizedTime.encodeContents()
+# ASN1GeneralizedTime.contents()
 
 ## Definition
 
 ```ts
-function encodeContents(): Uint8Array;
+function contents(): Uint8Array;
 ```

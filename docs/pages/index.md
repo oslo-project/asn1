@@ -13,13 +13,13 @@ A JavaScript library for encoding and decoding ASN.1 with Distinguished Encoding
 - Fully typed
 
 ```ts
-import { decodeASN1NoLeftoverBytes, ASN1Integer } from "@oslojs/asn1";
+import { parseASN1NoLeftoverBytes } from "@oslojs/asn1";
 
-const MAX_DEPTH = 10;
 const encoded = new Uint8Array([0x02, 0x01, 0x01]);
-const result = decodeASN1NoLeftoverBytes(encoded, MAX_DEPTH);
-if (result instanceof ASN1Integer) {
-	const value: bigint = result.value;
+const parsed = parseASN1NoLeftoverBytes(encoded);
+const oid = parsed.sequence().at(0).objectIdentifier();
+if (!oid.is("1.2.840.10045.4.3.2")) {
+	throw new Error("Invalid OID");
 }
 ```
 

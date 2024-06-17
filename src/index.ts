@@ -1,7 +1,8 @@
 export {
+	parseASN1,
+	ASN1Value,
 	ASN1BitString,
 	ASN1Boolean,
-	ASN1EncodedValue,
 	ASN1Enumerated,
 	ASN1GeneralizedTime,
 	ASN1IA5String,
@@ -14,20 +15,26 @@ export {
 	ASN1RealZero,
 	ASN1Sequence,
 	ASN1Set,
+	ASN1RealBinaryEncoding,
+	ASN1RealDecimalEncoding,
 	ASN1SpecialReal,
 	ASN1UTCTime,
 	ASN1UTF8String,
-	encodeObjectIdentifier,
-	ASN1Class,
-	ASN1EncodingType,
-	ASN1RealBinaryEncoding,
-	ASN1RealDecimalEncoding,
 	SpecialReal,
 	RealBinaryEncodingBase,
-	RealDecimalEncodingFormat
+	RealDecimalEncodingFormat,
+	encodeASN1,
+	encodeObjectIdentifier,
+	ASN1Class,
+	ASN1Form,
+	ASN1UniversalType,
+	parseASN1NoLeftoverBytes,
+	ASN1DecodeError,
+	ASN1EncodeError,
+	ASN1ParseError,
+	ASN1LeftoverBytesError,
+	ASN1EncodableSequence,
+	ASN1EncodableSet
 } from "./asn1.js";
-export { decodeASN1, decodeASN1NoLeftoverBytes } from "./decode.js";
-export { encodeASN1 } from "./encode.js";
-export { ASN1InvalidError, ASN1LeftoverBytesError, ASN1TooDeepError } from "./error.js";
 
-export type { ASN1Value } from "./asn1.js";
+export type { ASN1Encodable, ASN1Real } from "./asn1.js";
