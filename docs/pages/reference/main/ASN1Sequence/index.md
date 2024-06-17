@@ -4,41 +4,41 @@ title: "ASN1Sequence"
 
 # ASN1Sequence
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
-Represents an ASN.1 sequence and sequence-of value.
+Represents an ASN.1 sequence and sequence-of value. While this implements `ASN1Encodable`, we recommend using [`ASN1EncodableSequence`](/reference/main/ASN1EncodableSequence) for encoding sequences instead since it represents sequence as an array of [`ASN1Encodable`](/reference/main/ASN1Encodable).
 
 ## Constructor
 
 ```ts
 //$ ASN1Value=/reference/main/ASN1Value
-function constructor(items: $$ASN1Value[]): this;
+function constructor(elements: $$ASN1Value[]): this;
 ```
 
 ### Parameters
 
-- `items`
+- `elements`
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1Sequence/encodeContents)
+- [`contents()`](/reference/main/ASN1Sequence/contents)
 - [`isSequenceOfSingleType()`](/reference/main/ASN1Sequence/isSequenceOfSingleType)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 //$ ASN1Value=/reference/main/ASN1Value
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	tag: number;
-	items: $$ASN1Value[];
+	elements: $$ASN1Value[];
 }
 ```
 
 - `class`
 - `type`
 - `tag`
-- `items`
+- `elements`

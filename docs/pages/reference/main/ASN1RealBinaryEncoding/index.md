@@ -4,7 +4,7 @@ title: "ASN1RealBinaryEncoding"
 
 # ASN1RealBinaryEncoding
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
 Represents an ASN.1 real value with binary encoding.
 
@@ -23,17 +23,17 @@ function constructor(mantissa: bigint, base: $$RealBinaryEncodingBase, exponent:
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1RealBinaryEncoding/encodeContents)
+- [`contents()`](/reference/main/ASN1RealBinaryEncoding/contents)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 //$ RealBinaryEncodingBase=/reference/main/RealBinaryEncodingBase
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	mantissa: bigint;
 	base: $$RealBinaryEncodingBase;
 	exponent: bigint;

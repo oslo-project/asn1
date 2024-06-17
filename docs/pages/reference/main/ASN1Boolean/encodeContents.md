@@ -1,11 +1,11 @@
 ---
-title: "ASN1Boolean.encodeContents()"
+title: "ASN1Boolean.contents()"
 ---
 
-# ASN1BitString.encodeContents()
+# ASN1BitString.contents()
 
 ## Definition
 
 ```ts
-function encodeContents(): Uint8Array;
+function contents(): Uint8Array;
 ```

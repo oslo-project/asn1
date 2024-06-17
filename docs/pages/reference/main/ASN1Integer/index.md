@@ -4,7 +4,7 @@ title: "ASN1Integer"
 
 # ASN1Integer
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
 Represents an ASN.1 integer value.
 
@@ -20,16 +20,16 @@ function constructor(value: bigint): this;
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1Integer/encodeContents)
+- [`contents()`](/reference/main/ASN1Integer/contents)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	tag: number;
 	value: bigint;
 }

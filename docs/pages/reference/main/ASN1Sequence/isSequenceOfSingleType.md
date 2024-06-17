@@ -10,8 +10,8 @@ Returns whether the sequence only includes values of a single type.
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
-function isSequenceOfSingleType(asn1Class: ASN1Class, type: ASN1EncodingType, tag: number): boolean;
+//$ ASN1Form=/reference/main/ASN1Form
+function isSequenceOfSingleType(asn1Class: ASN1Class, type: ASN1Form, tag: number): boolean;
 ```
 
 ### Parameters

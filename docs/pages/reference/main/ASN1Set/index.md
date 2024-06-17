@@ -4,43 +4,43 @@ title: "ASN1Set"
 
 # ASN1Set
 
-_Implements [`ASN1Value`](/reference/main/ASN1Value)._
+_Implements [`ASN1Encodable`](/reference/main/ASN1Encodable)._
 
-Represents an ASN.1 set and set-of value.
+Represents an ASN.1 set and set-of value. While this implements `ASN1Encodable`, we recommend using [`ASN1EncodableSet`](/reference/main/ASN1EncodableSet) for encoding sets instead since it represents sequence as an array of [`ASN1Encodable`](/reference/main/ASN1Encodable).
 
-**This does not automatically sort the items as required by DER when encoding the value.**
+**This does not automatically sort the elements as required by DER when encoding the value.**
 
 ## Constructor
 
 ```ts
 //$ ASN1Value=/reference/main/ASN1Value
-function constructor(items: $$ASN1Value[]): this;
+function constructor(elements: $$ASN1Value[]): this;
 ```
 
 ### Parameters
 
-- `items`
+- `elements`
 
 ### Methods
 
-- [`encodeContents()`](/reference/main/ASN1Set/encodeContents)
+- [`contents()`](/reference/main/ASN1Set/contents)
 - [`isSetOfSingleType.md()`](/reference/main/ASN1Set/isSetOfSingleType.md)
 
 ## Properties
 
 ```ts
 //$ ASN1Class=/reference/main/ASN1Class
-//$ ASN1EncodingType=/reference/main/ASN1EncodingType
+//$ ASN1Form=/reference/main/ASN1Form
 //$ ASN1Value=/reference/main/ASN1Value
 interface Properties {
 	class: $$ASN1Class;
-	type: $$ASN1EncodingType;
+	form: $$ASN1Form;
 	tag: number;
-	items: $$ASN1Value[];
+	elements: $$ASN1Value[];
 }
 ```
 
 - `class`
 - `type`
 - `tag`
-- `items`
+- `elements`

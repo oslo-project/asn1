@@ -1,11 +1,11 @@
 ---
-title: "ASN1Enumerated.encodeContents()"
+title: "ASN1Enumerated.contents()"
 ---
 
-# ASN1Enumerated.encodeContents()
+# ASN1Enumerated.contents()
 
 ## Definition
 
 ```ts
-function encodeContents(): Uint8Array;
+function contents(): Uint8Array;
 ```
