@@ -6,7 +6,7 @@ title: "ASN1Value.objectIdentifier()"
 
 Decoded the encoded contents and rn object identifier.
 
-Throws an `ASN1DecodeError` if the value is not an object identifier.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not an object identifier.
 
 ## Definition
 

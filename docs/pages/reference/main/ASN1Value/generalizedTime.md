@@ -6,7 +6,7 @@ title: "ASN1Value.generalizedTime()"
 
 Decoded the encoded contents and r generalized time.
 
-Throws an `ASN1DecodeError` if the value is not a generalized time.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a generalized time.
 
 ## Definition
 

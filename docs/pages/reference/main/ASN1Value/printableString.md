@@ -6,7 +6,7 @@ title: "ASN1Value.printableString()"
 
 Decoded the encoded contents and rn printable string.
 
-Throws an `ASN1DecodeError` if the value is not an printable string.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not an printable string.
 
 ## Definition
 

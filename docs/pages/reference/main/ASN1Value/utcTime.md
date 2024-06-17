@@ -6,7 +6,7 @@ title: "ASN1Value.utcTime()"
 
 Decoded the encoded contents and r UTC time.
 
-Throws an `ASN1DecodeError` if the value is not a UTC time.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a UTC time.
 
 ## Definition
 

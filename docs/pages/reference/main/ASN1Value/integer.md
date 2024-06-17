@@ -6,7 +6,7 @@ title: "ASN1Value.integer()"
 
 Decoded the encoded contents and rn integer.
 
-Throws an `ASN1DecodeError` if the value is not integer boolean.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not integer boolean.
 
 ## Definition
 

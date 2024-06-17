@@ -6,7 +6,7 @@ title: "ASN1Value.utf8String()"
 
 Decoded the encoded contents and rn utf8 string.
 
-Throws an `ASN1DecodeError` if the value is not an utf8 string.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not an utf8 string.
 
 ## Definition
 

@@ -6,7 +6,7 @@ title: "ASN1Value.boolean()"
 
 Decoded the encoded contents and r boolean.
 
-Throws an `ASN1DecodeError` if the value is not a boolean.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a boolean.
 
 ## Definition
 

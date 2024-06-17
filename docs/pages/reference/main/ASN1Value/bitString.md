@@ -6,7 +6,7 @@ title: "ASN1Value.bitString()"
 
 Decoded the encoded contents and represents the `ASN1Value` as a bit string.
 
-Throws an `ASN1DecodeError` if the value is not a bit string.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a bit string.
 
 ## Definition
 

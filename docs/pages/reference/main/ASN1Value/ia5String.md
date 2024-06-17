@@ -6,7 +6,7 @@ title: "ASN1Value.ia5String()"
 
 Decoded the encoded contents and r IA5 string.
 
-Throws an `ASN1DecodeError` if the value is not a IA5 string.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a IA5 string.
 
 ## Definition
 

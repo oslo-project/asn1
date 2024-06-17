@@ -6,7 +6,7 @@ title: "ASN1Value.real()"
 
 Decoded the encoded contents and r real.
 
-Throws an `ASN1DecodeError` if the value is not a real.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a real.
 
 ## Definition
 

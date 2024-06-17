@@ -6,7 +6,7 @@ title: "ASN1Value.enumerated()"
 
 Decoded the encoded contents and rn enumerated value.
 
-Throws an `ASN1DecodeError` if the value is not enumerated.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not enumerated.
 
 ## Definition
 

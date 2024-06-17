@@ -6,7 +6,7 @@ title: "ASN1Value.set()"
 
 Decoded the encoded contents and r set.
 
-Throws an `ASN1DecodeError` if the value is not a set.
+Throws an [`ASN1DecodeError`](/reference/main/ASN1DecodeError) if the value is not a set.
 
 ## Definition
 
