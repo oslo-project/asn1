@@ -1,5 +1,5 @@
 ---
-title: "ASN1BitString"
+title: "ASN1Boolean"
 ---
 
 # ASN1Boolean
