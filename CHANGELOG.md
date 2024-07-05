@@ -1,5 +1,9 @@
 # @oslojs/asn1
 
+## 0.2.1
+
+- Add stricter parameter checks in `ASN1BitString`
+
 ## 0.2.0
 
 - [Breaking] Replace `decodeASN1()` with `parseASN1()`
