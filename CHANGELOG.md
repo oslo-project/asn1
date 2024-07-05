@@ -1,5 +1,9 @@
 # @oslojs/asn1
 
+## 0.2.2
+
+- Add missing error messages.
+
 ## 0.2.1
 
 - Add stricter parameter checks in `ASN1BitString`

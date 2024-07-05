@@ -556,10 +556,10 @@ export class ASN1BitString implements ASN1Encodable {
 
 	constructor(bytes: Uint8Array, length: number) {
 		if (length > bytes.byteLength * 8) {
-			throw new TypeError();
+			throw new TypeError("Data too small");
 		}
 		if (length <= (bytes.byteLength - 1) * 8) {
-			throw new TypeError();
+			throw new TypeError("Data too large");
 		}
 		this.bytes = bytes;
 		this.length = length;
