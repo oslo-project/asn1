@@ -1,5 +1,9 @@
 # @oslojs/asn1
 
+## 1.0.0
+
+- No changes.
+
 ## 0.2.3
 
 - Update dependencies.
